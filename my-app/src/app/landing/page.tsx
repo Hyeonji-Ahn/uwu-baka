@@ -13,12 +13,12 @@ export default function Page() {
       <div className="flex flex-col items-center justify-center space-y-4 mt-6">
         <button 
           onClick={() => router.push("/goal_setting")}
-          className="border-2 border-white rounded px-4 py-2 text-white hover:animate-pulse">
+          className="border-2 border-white rounded px-4 py-2 text-white hover:animate-pulse rounded-lg">
           Log Goals
         </button>
         <button 
           onClick={() => router.push("/calendar")}
-          className="border-2 border-white rounded px-4 py-2 text-white hover:animate-pulse">
+          className="border-2 border-white rounded px-4 py-2 text-white hover:animate-pulse rounded-lg">
           Calendar
         </button>
       </div>

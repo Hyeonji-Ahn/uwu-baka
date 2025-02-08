@@ -143,11 +143,11 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
     <div className="min-h-screen bg-black text-white flex flex-col items-center p-4">
       {/* Home Icon */}
       <Link href="/landing">
-                <HomeIcon className="size-6 text-white-500" />
+                <HomeIcon className="size-14 text-white-500" />
       </Link>
 
       {/* Import your calendar*/}
-      <h2 className="text-xl font-bold mb-4 mt-5">Import your Google Calendar</h2>
+      <h2 className="font-sans text-xl font-bold mb-4 mt-5">Import your Google Calendar</h2>
       <input type="file" accept=".ics" onChange={handleFileUpload} className="mb-4" />
       <ul className="mt-4">
         {events.map((event, index) => (
@@ -161,8 +161,8 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
       <p>{JSON.stringify(events, null, 3)}</p>
 
       {/* Input Field */}
-      <h2 className="text-xl font-bold mb-4 mt-5">Goals</h2>
-      <div className="w-full max-w-md">
+      <h2 className="font-sans text-xl font-bold mb-4 mt-5">Goals</h2>
+      <div className="font-sans w-full max-w-md">
         <input
           type="text"
           value={input}
@@ -170,16 +170,18 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
           placeholder="Start Typing..."
           className="w-full p-2 rounded-lg bg-transparent border border-white text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white"
         />
-        <button
+      </div>
+      <div>
+      <button
           onClick={addOption}
-          className="mt-2 w-full bg-white text-black py-2 rounded-lg hover:bg-gray-200"
+          className="font-sans mt-3 w-20 bg-white text-black py-2 rounded-lg hover:bg-gray-300 object-center"
         >
-          Add Option
-        </button>
+          Add
+      </button>
       </div>
 
       {/* Options */}
-      <div className="w-full max-w-md mt-6 space-y-2">
+      <div className="font-sans w-full max-w-md mt-6 space-y-2">
         {options.map((option) => (
           <div
             key={option.id}
@@ -199,7 +201,7 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
       <div className="w-full max-w-md mt-6 space-y-4">
         <button
           onClick={sendToOpenAI}
-          className="border-2 w-full border-white rounded px-4 py-2 text-white hover:animate-pulse"
+          className="font-sans border-2 w-full rounded px-4 py-2 bg-white text-black rounded-lg hover:animate-pulse"
         >
           Send to OpenAI
         </button>
