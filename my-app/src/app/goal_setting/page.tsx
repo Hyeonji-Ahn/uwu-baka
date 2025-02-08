@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from 'next/link';
 import { HomeIcon } from '@heroicons/react/24/solid'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import ICAL from 'ical.js'
 import { saveJsonToFile } from "../actions";
 import { useRouter } from 'next/navigation'
+
 
 interface Option {
   id: number;
@@ -177,7 +179,7 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
       </Link>
 
       {/* Import your calendar*/}
-      <h2 className="font-sans text-xl font-bold mb-4 mt-5">Import your Google Calendar</h2>
+      <h2 className="font-sans text-xl font-bold mb-4 mt-5 inline-flex ">Import your Google Calendar  <a href="https://calendar.google.com/calendar/u/0/r/settings/export" target="_blank"><ArrowTopRightOnSquareIcon className="size-6 text-white-500 ml-2" /></a> </h2>
       <input type="file" accept=".ics" onChange={handleFileUpload} className="mb-4" />
       <ul className="mt-4">
         {events.map((event, index) => (
