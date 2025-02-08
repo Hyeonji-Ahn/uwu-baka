@@ -106,7 +106,7 @@ export default function ResourceCalendar() {
                 toolTip: "Show context menu",
                 borderRadius: "50%",
                 backColor: "#00000033",
-                fontColor: "#ffffff",
+                fontColor: "#000000",
                 padding: 2,
                 menu: new DayPilot.Menu({
                     onShow: async args => {
@@ -179,7 +179,7 @@ export default function ResourceCalendar() {
                 right: 5,
                 height: 20,
                 text: args.data.text,
-                fontColor: "#fff",
+                fontColor: "#000000",
             },
             {
                 id: "progress-text",
@@ -189,7 +189,7 @@ export default function ResourceCalendar() {
                 height: 40,
                 text: progress + "%",
                 borderRadius: "5px",
-                fontColor: "#000",
+                fontColor: "#000000",
                 backColor: "#ffffff33",
                 style: "text-align: center; line-height: 20px;",
             },
@@ -220,7 +220,7 @@ export default function ResourceCalendar() {
                 height: 20,
                 padding: 2,
                 symbol: "icons/daypilot.svg#threedots-v",
-                fontColor: "#fff",
+                fontColor: "#000000",
                 backColor: "#00000033",
                 borderRadius: "50%",
                 style: "cursor: pointer;",
@@ -249,69 +249,11 @@ export default function ResourceCalendar() {
         if (!calendar || calendar.disposed()) {
             return;
         }
-
-        const columns: ColumnData[] = [
-            {name: "Resource 1", id: "R1"},
-            {name: "Resource 2", id: "R2"},
-            {name: "Resource 3", id: "R3"},
-            {name: "Resource 4", id: "R4"},
-            {name: "Resource 5", id: "R5"},
-            {name: "Resource 6", id: "R6"},
-            {name: "Resource 7", id: "R7"},
-            {name: "Resource 8", id: "R8"},
-        ];
-        setColumns(columns);
-
         const events: DayPilot.EventData[] = [
-            {
-                id: 1,
-                text: "Task 1",
-                start: "2025-11-04T10:30:00",
-                end: "2025-11-04T16:00:00",
-                resource: "R1",
-                tags: {
-                    progress: 60,
-                }
-            },
-            {
-                id: 2,
-                text: "Task 2",
-                start: "2025-11-04T09:30:00",
-                end: "2025-11-04T11:30:00",
-                resource: "R2",
-                tags: {
-                    color: "#6aa84f",
-                    progress: 100,
-                }
-            },
-            {
-                id: 3,
-                text: "Task 3",
-                start: "2025-11-04T12:00:00",
-                end: "2025-11-04T15:00:00",
-                resource: "R2",
-                tags: {
-                    color: "#f1c232",
-                    progress: 30,
-                }
-            },
-            {
-                id: 4,
-                text: "Task 4",
-                start: "2025-11-04T11:30:00",
-                end: "2025-11-04T14:30:00",
-                resource: "R3",
-                tags: {
-                    color: "#e69138",
-                    progress: 60,
-                }
-            },
+            
         ];
 
         setEvents(events);
-
-        datePicker?.select("2025-11-04");
-
     }, [calendar, datePicker]);
 
     const onTimeRangeSelected = async (args: DayPilot.CalendarTimeRangeSelectedArgs) => {
@@ -346,10 +288,10 @@ export default function ResourceCalendar() {
 
     return (
         <div style={styles.wrap}>
-            <div style={styles.left}>
+          <div style={styles.left}>
                 <DayPilotNavigator
                     selectMode={"Day"}
-                    showMonths={3}
+                    showMonths={1}
                     skipMonths={3}
                     onTimeRangeSelected={args => setStartDate(args.start)}
                     controlRef={setDatePicker}
@@ -357,18 +299,18 @@ export default function ResourceCalendar() {
             </div>
             <div style={styles.main}>
                 <div className={"toolbar"}>
-                    <button onClick={onPreviousClick} className={"btn-light"}>Previous</button>
-                    <button onClick={onTodayClick}>Today</button>
-                    <button onClick={onNextClick} className={"btn-light"}>Next</button>
+                    <button onClick={onPreviousClick} className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Previous</button>
+                    <button onClick={onTodayClick}   className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Today</button>
+                    <button onClick={onNextClick} className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Next</button>
                 </div>
                 <DayPilotCalendar
-                    viewType={"Resources"}
+                    viewType={"Day"}
                     columns={columns}
                     startDate={startDate}
                     events={events}
                     eventBorderRadius={"5px"}
-                    headerHeight={50}
-                    durationBarVisible={false}
+                    headerHeight={80}
+                    durationBarVisible={true}
                     onTimeRangeSelected={onTimeRangeSelected}
                     onEventClick={async args => { await editEvent(args.e); }}
                     contextMenu={contextMenu}
