@@ -1,4 +1,6 @@
 import OpenAI from "openai";
+import { NextRequest } from 'next/server'; 
+
 
 // Create an OpenAI API client
 const openai = new OpenAI({
@@ -6,7 +8,7 @@ const openai = new OpenAI({
 });
 
 // eslint-disabl-no-explicit-any
-export async function POST(req: { json: () => PromiseLike<{ messages: any; }> | { messages: any; }; }) { 
+export async function POST(req: Request | NextRequest) { 
   try {
     // Extract the `messages` from the request body
     const { messages } = await req.json();
