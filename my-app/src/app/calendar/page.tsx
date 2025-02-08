@@ -61,8 +61,6 @@ export default function ResourceCalendar() {
         {name: "90%", id: 90},
         {name: "100%", id: 100},
     ];
-
-n
     async function handleSave() {
           try {
               //creates json data

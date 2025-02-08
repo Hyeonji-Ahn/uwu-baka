@@ -1,26 +1,38 @@
 [
   {
     "id": 1,
-    "text": "Research market trends for new product launch",
+    "text": "Research language learning resources",
     "start": "2025-02-10T09:00:00",
-    "end": "2025-02-10T11:00:00"
+    "end": "2025-02-10T10:00:00"
   },
   {
     "id": 2,
-    "text": "Create a marketing plan",
-    "start": "2025-02-11T10:00:00",
-    "end": "2025-02-11T12:00:00"
+    "text": "Create a study plan",
+    "start": "2025-02-11T15:00:00",
+    "end": "2025-02-11T16:00:00"
   },
   {
     "id": 3,
-    "text": "Design promotional materials",
-    "start": "2025-02-12T15:00:00",
-    "end": "2025-02-12T17:00:00"
+    "text": "Begin learning basic vocabulary",
+    "start": "2025-02-12T10:00:00",
+    "end": "2025-02-12T11:00:00"
   },
   {
     "id": 4,
-    "text": "Reach out to potential partners",
-    "start": "2025-02-13T14:00:00",
-    "end": "2025-02-13T16:00:00"
+    "text": "Practice speaking with a language partner",
+    "start": "2025-02-13T17:00:00",
+    "end": "2025-02-13T18:00:00"
+  },
+  {
+    "id": 5,
+    "text": "Watch language learning videos",
+    "start": "2025-02-14T14:00:00",
+    "end": "2025-02-14T15:00:00"
+  },
+  {
+    "id": 6,
+    "text": "Review and revise previous lessons",
+    "start": "2025-02-15T11:00:00",
+    "end": "2025-02-15T12:00:00"
   }
 ]
