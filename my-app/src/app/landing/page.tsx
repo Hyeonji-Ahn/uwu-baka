@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 
 export default function Page() {
@@ -7,13 +8,16 @@ export default function Page() {
 
     return (
       <div className="bg-black h-screen flex flex-col items-center justify-center text-white">
-      <h1 className="text-center text-4xl font-bold">
-        a BETTER life tomorrow
-      </h1>
+            <Image 
+        src="/logo.png" 
+        alt="LOGO" 
+        width={300} 
+        height={300}
+      />
       <div className="flex flex-col items-center justify-center space-y-4 mt-6">
         <button 
           onClick={() => router.push("/goal_setting")}
-          className="border-2 border-white rounded px-4 py-2 text-white hover:animate-pulse rounded-lg">
+          className="border-2 border-white px-4 py-2 text-white hover:animate-pulse rounded-lg">
           Log Goals
         </button>
         <button 
