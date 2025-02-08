@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { HomeIcon } from '@heroicons/react/24/solid'
 import ICAL from 'ical.js'
 import { saveJsonToFile } from "../actions";
+import { useRouter } from 'next/navigation'
 
 interface Option {
   id: number;
@@ -12,6 +13,7 @@ interface Option {
 }
 
 export default function CustomPage() {
+  const router = useRouter()
   const [options, setOptions] = useState<Option[]>([]);
 
   const [input, setInput] = useState<string>("");
@@ -21,17 +23,26 @@ export default function CustomPage() {
 
   //setJsonData is a function to change the contents of jsonData
   const [jsonData, setJsonData] = useState("");
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function handleSave() {
-      try {
-          //creates json data
-          const data = JSON.parse(jsonData);
-          //calls function to save json to file
-          const result = await saveJsonToFile(data);
-          alert(result.message);
-      } catch (error) {
-          alert("Invalid JSON format");
-      }
+    try {
+        //creates json data
+        const data = JSON.parse(jsonData);
+        if (Array.isArray(data)) {
+          setTasks(data);
+        } else {
+          console.error("Invalid data format: expected an array");
+        }
+        //calls function to save json to file
+        const result = await saveJsonToFile(data);
+        alert(result.message);
+    } catch (error) {
+        alert("Invalid JSON format");
+    }
+
+    
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +87,7 @@ export default function CustomPage() {
     };
     reader.readAsText(file);
   };
-
+  
 
   const addOption = () => {
     if (input.trim() !== "") {
@@ -89,9 +100,23 @@ export default function CustomPage() {
     setOptions(options.filter((option) => option.id !== id));
   };
 
+  const removeTask = (id: number) => {
+    // Parse the JSON string into an array of objects
+    const jsonArray = JSON.parse(jsonData);
+    
+    // Filter the array to exclude the item with the specified id
+    const updatedArray = jsonArray.filter((item: { id: number }) => item.id !== id);
+    
+    // Convert the updated array back to a JSON string and update the state
+    setJsonData(JSON.stringify(updatedArray));
+    handleSave();
+  };
+
   const sendToOpenAI = async () => {
+    setLoading(true);  // Show the loading spinner
     const texts = options.map((option) => option.text);
-    const prompt = `I want to work on the goals in the following JSON input this week, along with a detailed plan to achieve each goal:  
+    const today = new Date();
+    const prompt = `Today is ${today}.I want to work on the goals in the following JSON input this week, along with a detailed plan to achieve each goal:  
 ${JSON.stringify(texts, null, texts.length)}.  
 
 Generate a structured and actionable weekly schedule covering Monday to Sunday that breaks down each goal into specific tasks, ensuring steady progress. Ensure that no tasks are scheduled during these unavailable times:  
@@ -135,6 +160,8 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
     } catch (error) {
       console.error("Error calling OpenAI:", error);
       setAiResponse("An error occurred while connecting to OpenAI.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -153,12 +180,11 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
         {events.map((event, index) => (
           <li key={index} className="p-2 border rounded mb-2">
             <strong>{event.summary}</strong><br />
-            {event.start}
           </li>
         ))}
       </ul>
-
-      <p>{JSON.stringify(events, null, 3)}</p>
+{/* 
+      <p>{JSON.stringify(events, null, 3)}</p> */}
 
       {/* Input Field */}
       <h2 className="font-sans text-xl font-bold mb-4 mt-5">Goals</h2>
@@ -201,18 +227,47 @@ Ensure the JSON output is correctly formatted, does not include trailing commas,
       <div className="w-full max-w-md mt-6 space-y-4">
         <button
           onClick={sendToOpenAI}
-          className="font-sans border-2 w-full rounded px-4 py-2 bg-white text-black rounded-lg hover:animate-pulse"
+          className="font-sans border-2 w-full px-4 py-2 bg-white text-black rounded-lg hover:animate-pulse"
         >
-          Send to OpenAI
+          Create Schedule
         </button>
       </div>
 
+      {loading && <div role="status">
+        <svg aria-hidden="true" className="w-8 h-8 mt-3 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+        </svg>
+        <span className="sr-only">Loading...</span>
+      </div>}
+      
       {/* AI Response */}
       {aiResponse && (
-        <div className="w-full max-w-md mt-6 p-4 bg-gray-800 rounded-lg">
+        <div className="w-full max-w-md mt-3 p-4 bg-gray-800 rounded-lg">
           <h3 className="text-lg font-bold mb-2">AI Response:</h3>
-          <p>{aiResponse}</p>
-        </div>
+          <ul className="space-y-2">
+          {tasks.map(task => (
+            <li key={task.id} className="p-3 rounded-lg shadow flex flex-col items-start">
+              <p className="font-semibold flex-star">{task.text}</p>
+              <p className="text-sm text-gray-600">
+                {new Date(task.start).toLocaleString()} - {new Date(task.end).toLocaleString()}
+              </p>
+              <button
+              onClick={() => removeTask(task.id)}
+              className="text-white hover:text-gray-400 self-end"
+              >
+              X
+            </button>
+            </li>
+          ))}
+        </ul>
+        <button 
+            onClick={() => router.push("/calendar")}
+            className="my-3 w-full border-2 border-white px-4 py-2 text-white hover:animate-pulse rounded-lg">
+            View Calendar
+        </button>
+      </div>
+        
       )}
     </div>
   );

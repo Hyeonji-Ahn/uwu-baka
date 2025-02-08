@@ -346,10 +346,10 @@ export default function ResourceCalendar() {
             <video style={styles.video} autoPlay loop muted>
                 <source src="/76YS.mp4" type="video/mp4" />
             </video>
-            <div style={styles.left}>
+            <div style={styles.left} className='ml-3'>
                 <div style={styles.buttonBox}>
                     <Link href="/landing">
-                        <HomeIcon className="size-6 text-white-500" />
+                        <HomeIcon className="size-9 mx-auto" />
                     </Link>
                 </div>
                 <div style={styles.buttonBox}>
@@ -365,11 +365,11 @@ export default function ResourceCalendar() {
                     controlRef={setDatePicker}
                     />
             </div>
-            <div style={styles.main}>
+            <div style={styles.main} className='mr-3'>
                 <div className={"toolbar"}>
-                    <button onClick={onPreviousClick} className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Previous</button>
-                    <button onClick={onTodayClick}   className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Today</button>
-                    <button onClick={onNextClick} className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Next</button>
+                    <button onClick={onPreviousClick} className={"mx-4 my-3 text-white hover:animate-pulse"}>Previous</button>
+                    <button onClick={onTodayClick}   className={"mx-4  text-white hover:bg-gray-600"}>Today</button>
+                    <button onClick={onNextClick} className={"mx-4  text-white hover:bg-gray-600"}>Next</button>
                 </div>
                 <DayPilotCalendar
                     viewType={"Day"}

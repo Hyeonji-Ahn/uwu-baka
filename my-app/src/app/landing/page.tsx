@@ -18,7 +18,7 @@ export default function Page() {
         </button>
         <button 
           onClick={() => router.push("/calendar")}
-          className="border-2 border-white rounded px-4 py-2 text-white hover:animate-pulse rounded-lg">
+          className="border-2 border-white px-4 py-2 text-white hover:animate-pulse rounded-lg">
           Calendar
         </button>
       </div>
