@@ -1,26 +1,20 @@
 [
   {
     "id": 1,
-    "text": "Research online resources for learning Japanese",
-    "start": "2025-02-10T09:00:00",
-    "end": "2025-02-10T10:00:00"
+    "text": "Watch online tutorials on sushi making techniques",
+    "start": "2025-02-10T18:00:00.000Z",
+    "end": "2025-02-10T20:00:00.000Z"
   },
   {
     "id": 2,
-    "text": "Practice Hiragana characters for 30 minutes",
-    "start": "2025-02-11T14:00:00",
-    "end": "2025-02-11T14:30:00"
+    "text": "Practice making sushi rice",
+    "start": "2025-02-12T19:00:00.000Z",
+    "end": "2025-02-12T20:00:00.000Z"
   },
   {
     "id": 3,
-    "text": "Watch a Japanese language tutorial video",
-    "start": "2025-02-12T19:00:00",
-    "end": "2025-02-12T20:00:00"
-  },
-  {
-    "id": 4,
-    "text": "Read a short children's book in Japanese",
-    "start": "2025-02-15T10:00:00",
-    "end": "2025-02-15T11:00:00"
+    "text": "Learn how to roll sushi with a bamboo mat",
+    "start": "2025-02-13T18:00:00.000Z",
+    "end": "2025-02-13T20:00:00.000Z"
   }
 ]
