@@ -1,8 +1,8 @@
 'use client';
  
 import Link from 'next/link';
-import React, {useEffect, useState} from "react";
-import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
+import React, { useEffect, useRef, useState } from 'react';
+import { DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import { HomeIcon } from '@heroicons/react/24/solid'
 
 class ColumnData implements DayPilot.CalendarColumnData {
