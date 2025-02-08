@@ -329,7 +329,7 @@ export default function ResourceCalendar() {
           cursor: "pointer",
           transition: "background-color 0.3s",
         },
-      };
+      } as const;
 
     useEffect(() => {
 
@@ -369,8 +369,8 @@ export default function ResourceCalendar() {
         calendar?.events.add({
             id: eventId,
             text: modal.result,
-            start: args.start.value.concat("Z"),
-            end: args.end.value.concat("Z"),
+            start: args.start,
+            end: args.end,
             resource: args.resource,
             tags: {}
         });
