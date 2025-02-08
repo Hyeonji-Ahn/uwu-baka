@@ -290,7 +290,7 @@ export default function ResourceCalendar() {
     return (
         <div style={styles.wrap}>
           <p className='px-5 border-red'><Link href="/landing">landing</Link></p>
-          <p><Link href="/goal_setting">gooal_setting</Link></p>
+          <p><Link href="/api_test">gooal_setting</Link></p>
           <div style={styles.left}>
                 <DayPilotNavigator
                     selectMode={"Day"}
