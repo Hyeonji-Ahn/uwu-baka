@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from 'next/link';
 import { HomeIcon } from '@heroicons/react/24/solid'
 import ICAL from 'ical.js'
+import { saveJsonToFile } from "../actions";
 
 interface Option {
   id: number;
@@ -17,7 +18,21 @@ export default function CustomPage() {
   const [aiResponse, setAiResponse] = useState<string>("");
 
   const [events, setEvents] = useState<any[]>([]);
-  const [dates, setDates] = useState<Date>();
+
+  //setJsonData is a function to change the contents of jsonData
+  const [jsonData, setJsonData] = useState("");
+
+  async function handleSave() {
+      try {
+          //creates json data
+          const data = JSON.parse(jsonData);
+          //calls function to save json to file
+          const result = await saveJsonToFile(data);
+          alert(result.message);
+      } catch (error) {
+          alert("Invalid JSON format");
+      }
+  }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -32,7 +47,6 @@ export default function CustomPage() {
         const vevents = comp.getAllSubcomponents('vevent');
 
         const now = new Date();
-        setDates(now)
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - now.getDay()); // Start of the week (Sunday)
         startOfWeek.setHours(0, 0, 0, 0);
@@ -77,13 +91,24 @@ export default function CustomPage() {
 
   const sendToOpenAI = async () => {
     const texts = options.map((option) => option.text);
-    const prompt = `I want to work on the goals in the following JSON input this week. 
-    JSON input: ${JSON.stringify(texts, null, texts.length)}.
-     Give me a schedule covering a week from Monday to Sunday. However, you cannot plan things on these times: ${JSON.stringify(events, null, events.length)}
-     give me detailed schedule.
-      For each schedule, give me a title with specific suggested plan. 
-      Return the week plan in JSON format with the following keys: starttime, endtime, title. 
-      starttime and endtime should be given in ISO time`;
+    const prompt = `I want to work on the goals in the following JSON input this week, along with a detailed plan to achieve each goal:  
+${JSON.stringify(texts, null, texts.length)}.  
+
+Generate a structured and actionable weekly schedule covering Monday to Sunday that breaks down each goal into specific tasks, ensuring steady progress. Ensure that no tasks are scheduled during these unavailable times:  
+${JSON.stringify(events, null, events.length)}.  
+
+Return the schedule as a valid JSON array where each entry follows this structure:  
+[  
+  {  
+    "id": <integer>,    
+    "text": "<specific task description related to the goal>",    
+    "start": "<ISO 8601 datetime string>",    
+    "end": "<ISO 8601 datetime string>",    
+  }  
+]  
+
+Ensure the JSON output is correctly formatted, does not include trailing commas, and strictly follows JSON syntax. Each task should be clearly linked to a goal and distributed across the week for optimal progress.  
+`;
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -100,7 +125,10 @@ export default function CustomPage() {
         throw new Error("Invalid API response");
       }
       if (response.ok) {
+        setJsonData(data.content);
+        handleSave();
         setAiResponse(data.content || "No response received.");
+        
       } else {
         setAiResponse("Error: " + data?.error?.message || "An error occurred.");
       }
@@ -119,16 +147,7 @@ export default function CustomPage() {
       </Link>
 
       {/* Import your calendar*/}
-      <div className="w-full max-w-md mt-6 space-y-2">
-        <button
-          onClick={addOption}
-          className="mt-2 w-full bg-white text-black py-2 rounded-lg hover:bg-gray-200"
-        >
-          Import your Google Calendar
-        </button>
-      </div>
-
-      <h2 className="text-xl font-bold mb-4">Import iCal File</h2>
+      <h2 className="text-xl font-bold mb-4 mt-5">Import your Google Calendar</h2>
       <input type="file" accept=".ics" onChange={handleFileUpload} className="mb-4" />
       <ul className="mt-4">
         {events.map((event, index) => (
@@ -142,7 +161,8 @@ export default function CustomPage() {
       <p>{JSON.stringify(events, null, 3)}</p>
 
       {/* Input Field */}
-      <div className="w-full max-w-md mt-8">
+      <h2 className="text-xl font-bold mb-4 mt-5">Goals</h2>
+      <div className="w-full max-w-md">
         <input
           type="text"
           value={input}
@@ -179,7 +199,7 @@ export default function CustomPage() {
       <div className="w-full max-w-md mt-6 space-y-4">
         <button
           onClick={sendToOpenAI}
-          className="w-full bg-blue-500 text-black py-3 rounded-lg hover:bg-blue-600"
+          className="border-2 w-full border-white rounded px-4 py-2 text-white hover:animate-pulse"
         >
           Send to OpenAI
         </button>
@@ -193,5 +213,5 @@ export default function CustomPage() {
         </div>
       )}
     </div>
-
-    
+  );
+}

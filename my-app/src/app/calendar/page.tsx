@@ -11,6 +11,14 @@ class ColumnData implements DayPilot.CalendarColumnData {
     blocked?: boolean;
 }
 
+type ScheduleItem = {
+    id: number;
+    text: string;
+    start: string;
+    end: string;
+  };
+  
+
 export default function ResourceCalendar() {
  
     const [calendar, setCalendar] = useState<DayPilot.Calendar>();
@@ -18,7 +26,7 @@ export default function ResourceCalendar() {
 
     const [events, setEvents] = useState<DayPilot.EventData[]>([]);
     const [columns, setColumns] = useState<ColumnData[]>([]);
-    const [startDate, setStartDate] = useState<string|DayPilot.Date>("2025-11-04");
+    const [startDate, setStartDate] = useState<string|DayPilot.Date>("2025-02-04");
 
     const styles = {
         wrap: {
@@ -251,11 +259,20 @@ export default function ResourceCalendar() {
         if (!calendar || calendar.disposed()) {
             return;
         }
-        const events: DayPilot.EventData[] = [
-            
-        ];
 
-        setEvents(events);
+        fetch("/data.json")
+        .then((response) => response.json())
+        .then((json) => {
+            const events: ScheduleItem[] = json.map((item: { id: any; text: any; start: string | number | Date; end: string | number | Date; }) => ({
+            id: Number(item.id), // Convert id to a number
+            text: item.text,
+            start: new Date(item.start).toISOString(), // Ensure correct format
+            end: new Date(item.end).toISOString()
+            }));
+            console.log("Events:", events); // Debugging line
+            setEvents(events);
+        })
+        .catch((error) => console.error("Error loading JSON:", error));
     }, [calendar, datePicker]);
 
     const onTimeRangeSelected = async (args: DayPilot.CalendarTimeRangeSelectedArgs) => {
