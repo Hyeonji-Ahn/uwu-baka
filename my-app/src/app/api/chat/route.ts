@@ -5,7 +5,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(req: { json: () => PromiseLike<{ messages: any; }> | { messages: any; }; }) {
+// eslint-disabl-no-explicit-any
+export async function POST(req: { json: () => PromiseLike<{ messages: any; }> | { messages: any; }; }) { 
   try {
     // Extract the `messages` from the request body
     const { messages } = await req.json();

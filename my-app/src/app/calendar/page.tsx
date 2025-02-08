@@ -1,8 +1,8 @@
 'use client';
  
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
-import { DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
+import React, { useEffect, useState } from 'react';
+import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import { useRouter } from 'next/navigation'
 import { HomeIcon } from '@heroicons/react/24/solid'
 import { saveJsonToFile } from "../actions";
@@ -62,7 +62,7 @@ export default function ResourceCalendar() {
         {name: "100%", id: 100},
     ];
 
-
+n
     async function handleSave() {
           try {
               //creates json data

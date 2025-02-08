@@ -12,6 +12,9 @@ interface Option {
   text: string;
 }
 
+// eslint-disabl-no-unused-vars
+// eslint-disabl-no-explicit-any
+
 export default function CustomPage() {
   const router = useRouter()
   const [options, setOptions] = useState<Option[]>([]);
