@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import React, {useEffect, useState} from "react";
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
+import { HomeIcon } from '@heroicons/react/24/solid'
 
 class ColumnData implements DayPilot.CalendarColumnData {
     id: string = "";
@@ -289,8 +290,15 @@ export default function ResourceCalendar() {
 
     return (
         <div style={styles.wrap}>
-          <p className='px-5 border-red'><Link href="/landing">landing</Link></p>
-          <p><Link href="/api_test">gooal_setting</Link></p>
+
+          {/* <p className='px-5 border-red'><Link href="/landing">landing</Link></p> */}
+          <button 
+          className = "top-4 left-10 h-12 w-12 focus:outline-none">
+            <Link href="/landing">
+                <HomeIcon className="size-6 text-white-500" />
+            </Link>
+          </button>
+          <p><Link href="/goal_setting">gooal_setting</Link></p>
           <div style={styles.left}>
                 <DayPilotNavigator
                     selectMode={"Day"}
