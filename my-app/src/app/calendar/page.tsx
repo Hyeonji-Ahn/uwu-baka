@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
+import { useRouter } from 'next/navigation'
 import { HomeIcon } from '@heroicons/react/24/solid'
 
 class ColumnData implements DayPilot.CalendarColumnData {
@@ -30,14 +31,47 @@ export default function ResourceCalendar() {
 
     const styles = {
         wrap: {
-            display: "flex"
+            display: "flex",
+            position: "relative",
+            minHeight: "100vh",
+        },
+        video: {
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: -1,
         },
         left: {
-            marginRight: "10px"
+            marginRight: "10px",
         },
         main: {
-            flexGrow: "1"
-        }
+            flexGrow: "1",
+        },
+        buttonBox: {
+            border: "2px solid #ddd",
+            borderRadius: "8px",
+            padding: "20px",
+            margin: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#fff",
+            textAlign: "center",
+        },
+        button: {
+            padding: "10px 20px",
+            margin: "5px",
+            border: "none",
+            borderRadius: "5px",
+            backgroundColor: "#000000",
+            color: "white",
+            cursor: "pointer",
+            transition: "background-color 0.3s",
+        },
+        buttonHover: {
+            backgroundColor: "#45a049",
+        },
     };
 
     const colors = [
@@ -305,18 +339,24 @@ export default function ResourceCalendar() {
         }
     };
 
+    const router = useRouter()
+
     return (
         <div style={styles.wrap}>
-
-          {/* <p className='px-5 border-red'><Link href="/landing">landing</Link></p> */}
-          <button 
-          className = "top-4 left-10 h-12 w-12 focus:outline-none">
-            <Link href="/landing">
-                <HomeIcon className="size-6 text-white-500" />
-            </Link>
-          </button>
-          <p><Link href="/goal_setting">gooal_setting</Link></p>
-          <div style={styles.left}>
+            <video style={styles.video} autoPlay loop muted>
+                <source src="/76YS.mp4" type="video/mp4" />
+            </video>
+            <div style={styles.left}>
+                <div style={styles.buttonBox}>
+                    <Link href="/landing">
+                        <HomeIcon className="size-6 text-white-500" />
+                    </Link>
+                </div>
+                <div style={styles.buttonBox}>
+                    <button style={styles.button} onClick={() => router.push('/goal_setting')}>
+                        Goal Setting
+                    </button>
+                </div>
                 <DayPilotNavigator
                     selectMode={"Day"}
                     showMonths={1}
