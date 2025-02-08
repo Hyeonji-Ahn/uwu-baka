@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 import { useRouter } from 'next/navigation'
 import { HomeIcon } from '@heroicons/react/24/solid'
+import { saveJsonToFile } from "../actions";
 
 class ColumnData implements DayPilot.CalendarColumnData {
     id: string = "";
@@ -28,6 +29,10 @@ export default function ResourceCalendar() {
     const [events, setEvents] = useState<DayPilot.EventData[]>([]);
     const [columns, setColumns] = useState<ColumnData[]>([]);
     const [startDate, setStartDate] = useState<string|DayPilot.Date>("2025-02-04");
+
+    const [jsonData, setJsonData] = useState("");
+
+    let eventId
 
     const styles = {
         wrap: {
@@ -101,6 +106,21 @@ export default function ResourceCalendar() {
         {name: "90%", id: 90},
         {name: "100%", id: 100},
     ];
+
+
+
+    async function handleSave() {
+          try {
+              //creates json data
+              const data = JSON.parse(jsonData);
+              //calls function to save json to file
+              const result = await saveJsonToFile(data);
+              alert(result.message);
+          } catch (error) {
+              alert("Invalid JSON format");
+          }
+      }
+    
 
     const editEvent = async (e: DayPilot.Event) => {
         const form = [
@@ -322,14 +342,19 @@ export default function ResourceCalendar() {
         if (modal.canceled) {
             return;
         }
+        eventId = events.length + 1;
         calendar?.events.add({
-            start: args.start,
-            end: args.end,
-            id: DayPilot.guid(),
+            id: eventId,
             text: modal.result,
+            start: args.start.value.concat("Z"),
+            end: args.end.value.concat("Z"),
             resource: args.resource,
             tags: {}
         });
+        eventId++;
+        console.log("Events:", events);
+        setJsonData(JSON.stringify(events));
+        handleSave();
     };
 
     const onEventMove = async (args: DayPilot.CalendarEventMoveArgs) => {
@@ -337,6 +362,8 @@ export default function ResourceCalendar() {
         if (column?.blocked) {
             args.preventDefault();
         }
+        //console.log("testing");
+        //setEvents(events);
     };
 
     const router = useRouter()
