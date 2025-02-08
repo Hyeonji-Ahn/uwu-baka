@@ -1,3 +1,10 @@
-export default function Page() {
-    return <p>goal_setting page</p>;
-  }
+'use client';
+
+ 
+export default function Chat() {
+  return (
+    <div>
+      <h1>Welcome to the Chatbot!</h1>
+    </div>
+  );
+}

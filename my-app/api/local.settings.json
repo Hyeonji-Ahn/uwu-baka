@@ -1,7 +1,0 @@
-{
-    "Values": {
-        "OPENAI_API_KEY": "ENTER_YOUR_KEY_HERE",
-        "FUNCTIONS_WORKER_RUNTIME": "node"
-    },
-    "IsEncrypted": false
-  }
