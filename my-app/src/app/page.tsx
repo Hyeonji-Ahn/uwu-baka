@@ -1,5 +1,6 @@
 'use client';
-
+ 
+import { useRouter } from 'next/navigation'
 import React, {useEffect, useState} from "react";
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
 
@@ -10,7 +11,8 @@ class ColumnData implements DayPilot.CalendarColumnData {
 }
 
 export default function ResourceCalendar() {
-
+    const router = useRouter()
+ 
     const [calendar, setCalendar] = useState<DayPilot.Calendar>();
     const [datePicker, setDatePicker] = useState<DayPilot.Navigator>();
 
@@ -288,6 +290,12 @@ export default function ResourceCalendar() {
 
     return (
         <div style={styles.wrap}>
+          <button type="button" onClick={() => router.push('/landing')}>
+            landing
+          </button>
+          <button type="button" onClick={() => router.push('/goal_setting')}>
+            goal_setting
+          </button>
           <div style={styles.left}>
                 <DayPilotNavigator
                     selectMode={"Day"}
