@@ -1,8 +1,8 @@
 'use client';
- 
-import { useRouter } from 'next/navigation'
-import React, {useEffect, useState} from "react";
-import {DayPilot, DayPilotCalendar, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
+
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
 
 class ColumnData implements DayPilot.CalendarColumnData {
     id: string = "";
@@ -12,24 +12,57 @@ class ColumnData implements DayPilot.CalendarColumnData {
 
 export default function ResourceCalendar() {
     const router = useRouter()
- 
+
     const [calendar, setCalendar] = useState<DayPilot.Calendar>();
     const [datePicker, setDatePicker] = useState<DayPilot.Navigator>();
 
     const [events, setEvents] = useState<DayPilot.EventData[]>([]);
     const [columns, setColumns] = useState<ColumnData[]>([]);
-    const [startDate, setStartDate] = useState<string|DayPilot.Date>("2025-11-04");
+    const [startDate, setStartDate] = useState<string | DayPilot.Date>("2025-11-04");
 
     const styles = {
         wrap: {
-            display: "flex"
+            display: "flex",
+            position: "relative",
+            minHeight: "100vh",
+        },
+        video: {
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: -1,
         },
         left: {
-            marginRight: "10px"
+            marginRight: "10px",
         },
         main: {
-            flexGrow: "1"
-        }
+            flexGrow: "1",
+        },
+        buttonBox: {
+            border: "2px solid #ddd",
+            borderRadius: "8px",
+            padding: "20px",
+            margin: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#fff",
+            textAlign: "center",
+        },
+        button: {
+            padding: "10px 20px",
+            margin: "5px",
+            border: "none",
+            borderRadius: "5px",
+            backgroundColor: "#000000",
+            color: "white",
+            cursor: "pointer",
+            transition: "background-color 0.3s",
+        },
+        buttonHover: {
+            backgroundColor: "#45a049",
+        },
     };
 
     const colors = [
@@ -47,24 +80,24 @@ export default function ResourceCalendar() {
     ];
 
     const progressValues = [
-        {name: "0%", id: 0},
-        {name: "10%", id: 10},
-        {name: "20%", id: 20},
-        {name: "30%", id: 30},
-        {name: "40%", id: 40},
-        {name: "50%", id: 50},
-        {name: "60%", id: 60},
-        {name: "70%", id: 70},
-        {name: "80%", id: 80},
-        {name: "90%", id: 90},
-        {name: "100%", id: 100},
+        { name: "0%", id: 0 },
+        { name: "10%", id: 10 },
+        { name: "20%", id: 20 },
+        { name: "30%", id: 30 },
+        { name: "40%", id: 40 },
+        { name: "50%", id: 50 },
+        { name: "60%", id: 60 },
+        { name: "70%", id: 70 },
+        { name: "80%", id: 80 },
+        { name: "90%", id: 90 },
+        { name: "100%", id: 100 },
     ];
 
     const editEvent = async (e: DayPilot.Event) => {
         const form = [
-            {name: "Event text", id: "text", type: "text"},
-            {name: "Event color", id: "tags.color", type: "select", options: colors},
-            {name: "Progress", id: "tags.progress", type: "select", options: progressValues },
+            { name: "Event text", id: "text", type: "text" },
+            { name: "Event color", id: "tags.color", type: "select", options: colors },
+            { name: "Progress", id: "tags.progress", type: "select", options: progressValues },
         ];
 
         const modal = await DayPilot.Modal.form(form, e.data);
@@ -125,7 +158,7 @@ export default function ResourceCalendar() {
                         {
                             text: "Block",
                             onClick: async (args) => {
-                                const updatedColumns = columns.map(c =>  c.id === args.source.id ? { ...c, blocked: !c.blocked } : c);
+                                const updatedColumns = columns.map(c => c.id === args.source.id ? { ...c, blocked: !c.blocked } : c);
                                 setColumns(updatedColumns);
                             }
                         },
@@ -140,7 +173,7 @@ export default function ResourceCalendar() {
                                 if (modal.canceled) {
                                     return;
                                 }
-                                const updatedColumns = columns.map(c =>  c.id === args.source.id ? { ...c, name: modal.result } : c);
+                                const updatedColumns = columns.map(c => c.id === args.source.id ? { ...c, name: modal.result } : c);
                                 setColumns(updatedColumns);
                             }
                         },
@@ -252,7 +285,7 @@ export default function ResourceCalendar() {
             return;
         }
         const events: DayPilot.EventData[] = [
-            
+
         ];
 
         setEvents(events);
@@ -290,26 +323,33 @@ export default function ResourceCalendar() {
 
     return (
         <div style={styles.wrap}>
-          <button type="button" onClick={() => router.push('/landing')}>
-            landing
-          </button>
-          <button type="button" onClick={() => router.push('/goal_setting')}>
-            goal_setting
-          </button>
-          <div style={styles.left}>
+            <video style={styles.video} autoPlay loop muted>
+                <source src="/76YS.mp4" type="video/mp4" />
+            </video>
+            <div style={styles.left}>
+                <div style={styles.buttonBox}>
+                    <button style={styles.button} onClick={() => router.push('/landing')}>
+                        Landing
+                    </button>
+                </div>
+                <div style={styles.buttonBox}>
+                    <button style={styles.button} onClick={() => router.push('/goal_setting')}>
+                        Goal Setting
+                    </button>
+                </div>
                 <DayPilotNavigator
                     selectMode={"Day"}
                     showMonths={1}
                     skipMonths={3}
                     onTimeRangeSelected={args => setStartDate(args.start)}
                     controlRef={setDatePicker}
-                    />
+                />
             </div>
             <div style={styles.main}>
                 <div className={"toolbar"}>
-                    <button onClick={onPreviousClick} className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Previous</button>
-                    <button onClick={onTodayClick}   className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Today</button>
-                    <button onClick={onNextClick} className={"mx-4 bg-gray-500 text-white hover:bg-gray-600"}>Next</button>
+                    <button onClick={onPreviousClick} className={"mx-4 bg-black-500 text-white hover:bg-gray-600"}>Previous</button>
+                    <button onClick={onTodayClick} className={"mx-4 bg-black-500 text-white hover:bg-gray-600"}>Today</button>
+                    <button onClick={onNextClick} className={"mx-4 bg-black-500 text-white hover:bg-gray-600"}>Next</button>
                 </div>
                 <DayPilotCalendar
                     viewType={"Day"}
@@ -330,5 +370,5 @@ export default function ResourceCalendar() {
                 />
             </div>
         </div>
-    )
+    );
 }
